@@ -2,6 +2,17 @@
 
 Full-stack web application for **Lom Wong Café & Restaurant (ล้อมวง คาเฟ่)**.
 
+## Demo
+
+- Live demo: `http://lomwong.me`
+- Dashboard login: `http://lomwong.me/dashboard/login`
+- Pivot worksheet: [PIVOT.md](./PIVOT.md)
+
+Seeded demo accounts:
+
+- Owner: `owner@lomwong.local` / `owner1234`
+- Staff: `staff@lomwong.local` / `staff1234`
+
 ## Project Tree
 
 ```text
@@ -56,12 +67,35 @@ lomwong-cafe/
 ## Features
 
 - Customer site: home, live store status, menu, today-only booking, contact/map.
-- Floating Demi chatbot using the Gemini API with `backend/data/lomwong_cafe_kb.txt`.
+- Floating โมจิ chatbot using the Gemini API with `backend/data/lomwong_cafe_kb.txt`.
 - Owner/staff dashboard with JWT login.
-- Store status manager, menu CRUD, promotion CRUD, booking manager, staff manager.
-- Sales logger, daily/weekly/monthly summary, and Demi Alert when daily sales are below threshold.
-- Caption generator using Gemini, default model `gemini-2.5-flash`.
+- Store status manager, menu CRUD, sold-out menu status, promotion CRUD, booking manager, and staff manager.
+- Auto sales logging, daily/weekly/monthly summary, and โมจิ Alert when daily sales are below threshold.
+- Caption Generator with goal, audience, platform, tone, length, hashtag count, and copy-ready outputs.
 - QR ordering and staff order entry with status flow `pending -> preparing -> ready -> paid`.
+- Room information manager for daily rooms, room availability, and room price.
+
+## Demo Day Polish Checklist
+
+### UI / UX
+
+- [x] ชื่อ app และ branding สอดคล้องกับ domain ใหม่: Lom Wong Café & Daily Rooms
+- [x] ภาษาที่ใช้เหมาะกับลูกค้าร้านอาหาร/ห้องพักและพนักงานร้าน
+- [x] มี error message ภาษาไทยที่อ่านเข้าใจง่ายใน booking, login, ordering, และ dashboard
+- [x] หน้าตาเป็น Next.js dashboard สะอาด ไม่มี debug output โผล่ในหน้าเว็บ
+
+### Code Quality
+
+- [x] ไม่มี debug `print()` ในโค้ด เพราะโปรเจกต์ใช้ Node.js/Next.js
+- [x] ไม่มี hard-coded API key ในโค้ด และใช้ `.env` / `.env.example`
+- [x] dependencies ครบใน `package.json`, `frontend/package.json`, และ `backend/package.json`
+
+### README.md
+
+- [x] README อธิบายระบบสำหรับ domain ล้อมวง ไม่ใช่ MilkLab°
+- [x] มี link ไปยัง live demo URL
+- [x] มีวิธีรันในเครื่องท้องถิ่นด้วย Docker Desktop และ manual local setup
+- [x] มี link ไปยัง [PIVOT.md](./PIVOT.md)
 
 ## Local Development
 
@@ -144,10 +178,7 @@ Open:
 - Frontend: `http://localhost:3000`
 - Backend health: `http://localhost:4000/api/health`
 
-Seeded logins:
-
-- Owner: `owner@lomwong.local` / `owner1234`
-- Staff: `staff@lomwong.local` / `staff1234`
+Seeded logins are listed in the Demo section above.
 
 ## API Summary
 
@@ -291,7 +322,15 @@ sudo systemctl reload nginx
 - Replace `JWT_SECRET` with a long random value.
 - Set `GEMINI_API_KEY` before using chatbot/caption generation in production.
 - For Session 2 style Sales Logger, set `GOOGLE_SHEET_ID`, `GOOGLE_SHEET_WORKSHEET`, and `GOOGLE_APPLICATION_CREDENTIALS`; new sales will still save to PostgreSQL and will also append to Google Sheets when configured.
-- For Telegram Demi Alert, set `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID`, then call `POST /api/sales/demi-alert` from the dashboard, a cron job, or GitHub Actions.
+- For Telegram โมจิ Alert, set `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID`, then call `POST /api/sales/demi-alert` from the dashboard, a cron job, or GitHub Actions.
 - Update `NEXT_PUBLIC_API_URL` and `FRONTEND_ORIGIN` to your domain.
 - The backend accepts menu images via multipart `image` upload or an `imageUrl` field.
 - Dashboard auth is stored in browser localStorage; for stricter production security, move JWT to httpOnly cookies.
+
+## Demo Day Self-Check
+
+- [x] Deploy URL ใช้งานได้ (เปิดทดสอบล่าสุด: 2026-05-25)
+- [x] ไม่มี `.env` ใน git history และไม่มี secret JSON ถูก commit
+- [x] PIVOT.md ครบ 3 ข้อ
+- [x] README อธิบายระบบของ domain ตัวเอง (ไม่ใช่ MilkLab°)
+- [x] knowledge base, prompt, UI ปรับเป็น domain ใหม่หมดแล้ว
